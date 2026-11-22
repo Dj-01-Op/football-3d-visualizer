@@ -38,7 +38,7 @@ The application visualizes approximately 3,000 frames of football tracking data,
 
 ### Football Tracking Replay
 
-![Football Replay](screenshots/football-demo-2.png)
+![Football Replay](screenshots/football-demo-2.jpeg)
 
 ## What I Learned
 
