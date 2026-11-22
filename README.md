@@ -1,95 +1,152 @@
-# Football Spatial Replay
 
-An offline-first browser visualization of 3D football tracking data. It renders 3,000 frames of tracked player skeletons and ball movement as a daylight stadium replay with cartoon player bodies, embedded player portraits, multiple cameras, motion trails, and an instanced audience.
+# 3D Football Visualizer
 
-The deployed site is a single static file. It needs no API, database, paid server, or runtime dependencies.
+**Interactive Football Tracking Visualization | AWS Kiro Workshop Project**
 
-## View it locally
+An interactive, offline-first 3D football visualization built using JavaScript, Three.js, HTML, CSS, and Python.
 
-The ready-to-use site is `public/index.html`.
+I started this project during an **AWS Kiro workshop**, where I explored AI-assisted software development and **spec-driven development**. This approach focuses on defining requirements, designing a solution, and breaking implementation into manageable tasks before writing code.
+
+The application visualizes approximately 3,000 frames of football tracking data, showing player movement and ball tracking in an interactive 3D stadium.
+
+## Key Features
+
+- Interactive 3D football replay with animated players and ball movement
+- Multiple camera perspectives
+- Stadium environment with lighting and an instanced audience
+- Player representations with embedded portraits
+- Motion trails and customizable visualization layers
+- Offline-first operation without an API, database, or backend server
+- Standalone static HTML application
+
+## Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| JavaScript | Application logic and interaction |
+| Three.js / WebGL | 3D rendering and animation |
+| HTML & CSS | User interface |
+| Python | Tracking-data processing and build automation |
+| Git & GitLab | Version control and hosting |
+| AWS Kiro | AI-assisted and spec-driven development |
+
+## Project Preview
+
+### 3D Stadium Visualization
+
+![Football Visualization](screenshots/football-demo-1.png)
+
+### Football Tracking Replay
+
+![Football Replay](screenshots/football-demo-2.png)
+
+## What I Learned
+
+This project helped me explore how tracking data can be transformed into an interactive 3D visualization.
+
+During the AWS Kiro workshop, I learned how AI-assisted development can support a structured workflow:
+
+**Requirements → Design → Implementation Tasks**
+
+I also gained practical exposure to Three.js, browser-based rendering, Python data processing, and organizing a software project across multiple files.
+
+## Run Locally
+
+The ready-to-use application is located at `public/index.html`.
 
 ### Windows
 
-Open a terminal in this folder and run:
+Open a terminal in the project directory and run:
 
-```text
+```powershell
 py -m http.server 8000 --directory public
 ```
 
-### macOS or Linux
+### macOS / Linux
 
-```text
+```bash
 python3 -m http.server 8000 --directory public
 ```
 
-Then visit `http://127.0.0.1:8000`.
+Then open:
 
-You can also double-click `public/index.html` in a current browser. A local server gives more consistent browser behavior.
+http://127.0.0.1:8000
 
-## Deploy free with GitLab Pages
+You can also open `public/index.html` directly in a modern browser. A local server provides more consistent browser behavior.
 
-This repository includes `.gitlab-ci.yml`. GitLab Pages publishes the committed `public/index.html` as a static site.
+## Project Structure
 
-1. Create a blank GitLab project.
-2. Extract this ZIP and open the folder in VS Code.
-3. Open the VS Code terminal and run:
+| File / Directory | Description |
+|---|---|
+| `public/index.html` | Standalone application |
+| `viewer/app.js` | Stadium, players, cameras, lighting, and interface |
+| `viewer/core.js` | Playback, decoding, and tracking logic |
+| `viewer/template.html` | HTML and CSS template |
+| `viewer/roster.json` | Player, jersey, and portrait mappings |
+| `viewer/portraits/` | Local portrait assets |
+| `build/codec.py` | Tracking-data encoder |
+| `build/build.py` | Single-file application builder |
+| `.gitlab-ci.yml` | GitLab CI/CD configuration |
+| `screenshots/` | Project screenshots |
 
-```text
-git init
-git add .
-git commit -m "Add football 3D visualizer"
-git branch -M main
-git remote add origin YOUR_GITLAB_REPOSITORY_URL
-git push -u origin main
+## Deployment
+
+The repository includes a `.gitlab-ci.yml` configuration for deploying the application as a static website through GitLab Pages.
+
+If GitLab Pages is enabled for the project and the pipeline succeeds, the deployment URL can be found under **Deploy → Pages**.
+
+The application does not require a separate backend server, database, or runtime API.
+
+## Rebuild with Tracking Data
+
+The ready-to-use application in `public/` does not require rebuilding.
+
+To regenerate it from the original tracking data:
+
+1. Place the private HTML redirect stub at `data.parquest` in the project root. This file must not be committed to Git.
+
+2. Create a Python virtual environment:
+
+```bash
+python3 -m venv .venv
 ```
 
-4. In GitLab, watch **Build > Pipelines**.
-5. After the pipeline succeeds, open **Deploy > Pages** for the public URL.
+3. Install the required dependencies:
 
-GitLab Pages hosts plain HTML, CSS, and JavaScript without a separate server. GitLab.com offers Pages at no additional hosting charge, subject to the account's current CI/CD quotas and terms.
-
-## Customize the visualizer
-
-- `viewer/app.js`: stadium, grass, crowd, characters, cameras, lighting, and interface wiring.
-- `viewer/core.js`: playback, decoding, tracking logic, layers, and data rules.
-- `viewer/template.html`: HTML layout and CSS.
-- `viewer/roster.json`: player-name, jersey, portrait, and attribution mapping.
-- `viewer/portraits/`: local portrait files embedded during a rebuild.
-- `build/codec.py`: compact tracking-data encoder.
-- `build/build.py`: secure single-file builder.
-
-The current identity overlay treats `Home` as FC Bayern because the source dataset contains only `Home`, `Away`, and jersey numbers. This is labeled as an assumption in the interface. Uncertain jersey mappings remain generic.
-
-## Rebuild with tracking data
-
-The ready site in `public/` does not need a rebuild. To regenerate it from the source data:
-
-1. Put your private HTML redirect stub at `data.parquest` in the project root. It is ignored by Git.
-2. Create the environment and install binary wheels:
-
-```text
-python3 -m venv .venv
+```bash
 .venv/bin/pip install --only-binary=:all: -r build/requirements.txt
 ```
 
-3. Build:
+4. Run the builder:
 
-```text
+```bash
 .venv/bin/python build/build.py --stub data.parquest --out public/index.html
 ```
 
 On Windows, use `.venv\Scripts\python.exe` instead of `.venv/bin/python`.
 
-The builder downloads the Parquet file to a temporary directory, verifies it, embeds the compressed tracking payload and all local assets, then deletes temporary data. It never prints or writes the signed URL into the output.
+The builder downloads the Parquet file into a temporary directory, verifies it, embeds the compressed tracking data and local assets, and removes temporary files.
+
+## Data Limitations
+
+The original tracking dataset identifies teams as `Home` and `Away` and provides jersey numbers without verified team identities.
+
+The visualization currently assumes that `Home` represents FC Bayern. This assumption is disclosed in the application, and uncertain player mappings remain generic.
 
 ## Security
 
-Never commit `data.parquest`. It contains a temporary signed download URL. The supplied ZIP excludes that file, the Parquet data, virtual environments, caches, and Git history.
+The private file `data.parquest` contains a temporary signed download URL and must never be uploaded to a public repository.
 
-## Browser support
+The repository excludes the original tracking dataset, virtual environments, caches, and other unnecessary development files.
 
-Use a current desktop version of Chrome, Edge, Firefox, or Safari with WebGL and `DecompressionStream` support. Disable the **Audience** layer on slower devices.
+## Browser Compatibility
 
-## Credits
+Use a modern desktop browser such as Chrome, Edge, Firefox, or Safari with WebGL and `DecompressionStream` support.
 
-See `ATTRIBUTIONS.md`. Portrait licenses and source links are also shown inside the visualizer.
+For better performance on slower devices, disable the **Audience** visualization layer.
+
+## Credits and Attribution
+
+Third-party libraries, player portraits, and other assets are documented in [ATTRIBUTIONS.md](ATTRIBUTIONS.md).
+
+This project was developed as a learning experience following an AWS Kiro workshop, with a focus on software development, interactive data visualization, and AI-assisted development workflows.
