@@ -1,0 +1,15 @@
+stages:
+  - deploy
+
+deploy-pages:
+  stage: deploy
+  image: alpine:3.21
+  script:
+    - test -s public/index.html
+    - echo "Publishing the self-contained football visualizer"
+  pages: true
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

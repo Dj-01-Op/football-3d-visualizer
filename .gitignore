@@ -1,0 +1,19 @@
+# Private input data and generated working output
+data.parquest
+data/
+dist/
+
+# Environments and dependencies
+.venv/
+node_modules/
+
+# Caches
+__pycache__/
+.pytest_cache/
+.hypothesis/
+*.py[cod]
+
+# Editor and OS files
+.vscode/
+.DS_Store
+Thumbs.db

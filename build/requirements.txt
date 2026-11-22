@@ -1,0 +1,6 @@
+# Install: python3 -m venv .venv && .venv/bin/pip install --only-binary=:all: -r build/requirements.txt
+pyarrow==22.0.0
+pandas==2.3.3
+numpy==2.5.4
+pytest==9.2.0
+hypothesis==6.170.14

@@ -1,0 +1,13 @@
+{
+  "name": "football-3d-visualization",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline single-file 3D visualizer for football skeleton tracking data",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/js/"
+  },
+  "devDependencies": {
+    "fast-check": "4.10.2"
+  }
+}
